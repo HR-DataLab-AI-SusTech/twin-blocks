@@ -19,8 +19,9 @@ flow from the platform) and leaves through <code>Fluid.Return</code>; a temperat
 reads is a <code>Fluid.LeavingTemperature</code>.</li>
 <li><b>A table goes in the package's <code>Resources/</code></b> and is read through
 <code>Modelica.Utilities.Files.loadResource</code>, so the FMU carries it.</li>
-<li><b>Every parameter's value names its source</b> in its description or the class's
-documentation: a datasheet, a measurement, an assumption.</li>
+<li><b>Every parameter's value names its source</b> in its description or, for a value a
+model sets on a block it extends, in the model's documentation: a datasheet, a measurement, an
+assumption.</li>
 </ol>
 <p><code>Examples</code> holds whole models built this way; CI builds each into an FMU.</p>
 </html>"));

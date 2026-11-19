@@ -5,11 +5,13 @@ package Examples "Whole models built the TwinBlocks way; CI builds each into an 
   model HeatPumpOnMeasuredWater "A water-to-water heat pump fed with measured water on both sides"
     // The platform feeds the compressor signal and each side's water in (temperature and flow)
     // and reads the water out, the power, the heat and the COP: every input and output a
-    // TwinBlocks.Units type, every measured stream through Fluid.Supply.
+    // TwinBlocks.Units type, every measured stream through Fluid.Supply. Its parameters' values
+    // here are examples: a model that extends it names each value's source in its own
+    // documentation, since a modifier cannot change a description.
     package Medium = Buildings.Media.Water;
 
-    parameter Modelica.Units.SI.Power P_nominal = 2500 "Compressor's electric power at full signal (assumed)";
-    parameter Real etaCarnot(min = 0, max = 1) = 0.4 "Share of the Carnot COP it reaches (assumed)";
+    parameter Modelica.Units.SI.Power P_nominal = 2500 "Compressor's electric power at full signal";
+    parameter Real etaCarnot(min = 0, max = 1) = 0.4 "Share of the Carnot COP it reaches";
 
     input TwinBlocks.Units.Fraction compressor "Compressor signal, 0 to 1";
     input TwinBlocks.Units.Temperature_degC sinkIn "Water into the condenser";
