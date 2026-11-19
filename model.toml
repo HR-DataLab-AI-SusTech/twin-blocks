@@ -11,7 +11,7 @@ openmodelica_image = "openmodelica/openmodelica:v1.27.1-minimal@sha256:ac9a0223e
 
 # The Modelica libraries the model uses, each a git repository at a full commit. `build` fetches
 # them into build/libraries/ and builds with no network, so the commit says exactly what built the
-# FMU. The Modelica Standard Library is v4.1.0, the version `uses` in Model/package.mo names, in
+# FMU. The Modelica Standard Library is v4.1.0, the version `uses` in TwinBlocks/package.mo names, in
 # OpenModelica's own distribution (4.1.0+maint.om): its ModelicaServices finds a modelica:// file
 # inside an FMU, where the upstream one does not. Add another library the same way, its
 # repository's root holding the library's folder (OpenModelica's index names the commit).

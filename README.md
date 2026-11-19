@@ -7,15 +7,23 @@ enters it the same way, and a parameter says where its value comes from.
 
 A model's repository starts from the
 [Modelica model template](https://github.com/HR-DataLab-AI-SusTech/modelica-model-template) and
-adds TwinBlocks to its `model.toml` at a commit, beside the Standard Library and Buildings:
+adds TwinBlocks and the Buildings library it builds on to its `model.toml`, each at a commit,
+beside the template's Standard Library:
 
 ```toml
+# LBNL's Modelica Buildings Library 14.0.0, the commit OpenModelica's library index names.
+[libraries.Buildings]
+git = "https://github.com/lbl-srg/modelica-buildings.git"
+commit = "ad48324b74e9751e2e49dac5fe3c4dcb546755a2"
+
 [libraries.TwinBlocks]
 git = "https://github.com/HR-DataLab-AI-SusTech/twin-blocks.git"
 commit = "<a commit of this repository>"
 ```
 
-and `uses(TwinBlocks(version = "0.1.0"))` in its package's annotation.
+and `uses(Buildings(version = "14.0.0"), TwinBlocks(version = "0.1.0"))` in its package's
+annotation. The build fetches them and runs with no network, so a library missing from
+`model.toml` fails it.
 
 ## The standard
 
@@ -26,20 +34,22 @@ and `uses(TwinBlocks(version = "0.1.0"))` in its package's annotation.
    `Fraction`, `Ratio`), whose unit is the one the kind declares for the channel.
 2. **A run's parameter is a top-level `parameter`** with a unit and a description; a value fixed
    for the model goes under `protected`.
-3. **A measured stream enters through `Fluid.Supply`** (a temperature and a flow from the
-   platform) and leaves through `Fluid.Return`; a temperature the platform reads is a
-   `Fluid.LeavingTemperature`.
-4. **A table goes in the package's `Resources/`**, read through `loadResource`, so the FMU
+3. **A state's start the platform may set is a parameter named `...Start`**, in its unit, so
+   nothing starts at a library's default unannounced.
+4. **A measured stream enters through `Fluid.Supply`** (a mass flow) or `Fluid.SupplyLitres` (a
+   volume flow in L/min, as the lab's meters give it) and leaves through `Fluid.Return`; a
+   temperature the platform reads is a `Fluid.LeavingTemperature`.
+5. **A table goes in the package's `Resources/`**, read through `loadResource`, so the FMU
    carries it.
-5. **Every parameter's value names its source**: a datasheet, a measurement or an assumption.
+6. **Every parameter's value names its source**: a datasheet, a measurement or an assumption.
 
 ## The blocks
 
 | Package | Blocks |
 | --- | --- |
-| `Units` | the unit types the platform's kinds use |
-| `Fluid` | `Supply`, `Return`, `LeavingTemperature`: where a measured stream meets a model |
-| `HeatPumps` | `WaterToWater`: a heat pump as a Carnot machine scaled by its compressor signal (Buildings' `Carnot_y`) |
+| `Units` | the unit types the platform's kinds use, `L/min` among them |
+| `Fluid` | `Supply`, `SupplyLitres`, `Return`, `LeavingTemperature`: where a measured stream meets a model |
+| `HeatPumps` | `WaterToWater`: a heat pump as a Carnot machine scaled by its compressor signal (Buildings' `Carnot_y`); it stops when either side's water stops |
 | `Storage` | `Tank`: a fully mixed water tank that loses heat to its surroundings |
 | `Examples` | `HeatPumpOnMeasuredWater`: a whole model built the TwinBlocks way |
 
@@ -50,9 +60,10 @@ They build on the [Modelica Standard Library](https://github.com/modelica/Modeli
 
 ## Its CI
 
-Every push builds `Examples.HeatPumpOnMeasuredWater` into an FMU with the template's
-`scripts/model.py`, steps it against `reference/` and prints its kind entry: the library
-compiles, and its blocks answer as they did. A change that changes an answer rewrites the
+Every push checks every concrete class in OpenModelica (`scripts/check_classes.py`), builds
+`Examples.HeatPumpOnMeasuredWater` into an FMU with the template's `scripts/model.py`, steps it
+against `reference/` and prints its kind entry: the classes compile, and the example answers as
+it did. A change that changes an answer rewrites the
 reference (`scripts/model.py test --write`) in the same commit, with the reason.
 
 ## Licence

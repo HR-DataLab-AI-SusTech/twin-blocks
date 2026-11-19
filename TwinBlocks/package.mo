@@ -11,12 +11,17 @@ model made from TwinBlocks follows, so a kind can declare it and a scenario can 
 <li><b>What the platform feeds is a top-level <code>input</code>, what it reads a top-level
 <code>output</code></b>, each a <code>Real</code> of a type in <code>TwinBlocks.Units</code>: its unit
 is the one the kind declares for the channel (<code>degC</code>, <code>kW</code>, <code>kW.h</code>,
-<code>kg/s</code>, <code>1</code>).</li>
+<code>kg/s</code>, <code>L/min</code>, <code>1</code>), so a scenario can replay the measured channel
+into it.</li>
 <li><b>A run's parameter is a top-level <code>parameter</code></b> with a unit and a description,
 which the run dialog shows; a value fixed for the model goes under <code>protected</code>.</li>
+<li><b>A state's start the platform may set is a top-level parameter named <code>...Start</code></b>,
+in its unit (a water temperature at the start, say): a run sets it, and nothing starts at a
+library's default unannounced.</li>
 <li><b>A measured fluid stream enters through <code>Fluid.Supply</code></b> (a temperature and a
-flow from the platform) and leaves through <code>Fluid.Return</code>; a temperature the platform
-reads is a <code>Fluid.LeavingTemperature</code>.</li>
+mass flow) <b>or <code>Fluid.SupplyLitres</code></b> (a volume flow in L/min, as the lab's meters
+give it), and leaves through <code>Fluid.Return</code>; a temperature the platform reads is a
+<code>Fluid.LeavingTemperature</code>.</li>
 <li><b>A table goes in the package's <code>Resources/</code></b> and is read through
 <code>Modelica.Utilities.Files.loadResource</code>, so the FMU carries it.</li>
 <li><b>Every parameter's value names its source</b> in its description or, for a value a

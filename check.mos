@@ -1,0 +1,6 @@
+// Checks every concrete class of TwinBlocks with OpenModelica, so a block no example builds still
+// compiles; the fluid adapters, whose medium a model chooses, are checked through the example.
+loadFile("TwinBlocks/package.mo"); getErrorString();
+print("TwinBlocks.HeatPumps.WaterToWater: " + checkModel(TwinBlocks.HeatPumps.WaterToWater) + "\n"); print(getErrorString());
+print("TwinBlocks.Storage.Tank: " + checkModel(TwinBlocks.Storage.Tank) + "\n"); print(getErrorString());
+print("TwinBlocks.Examples.HeatPumpOnMeasuredWater: " + checkModel(TwinBlocks.Examples.HeatPumpOnMeasuredWater) + "\n"); print(getErrorString());

@@ -1,5 +1,5 @@
 // Builds the example HeatPumpOnMeasuredWater.fmu from TwinBlocks/: FMI 2.0 co-simulation, CVODE inside, a binary for the
-// machine it runs on, and the package's Resources (a data file the model reads) inside it. `uv run python scripts/model.py build` runs it in OpenModelica's image for
+// machine it runs on, and any data file in the package's Resources inside it. `uv run python scripts/model.py build` runs it in OpenModelica's image for
 // Linux x86-64, the binary the platform's sandbox runs.
 setCommandLineOptions("--fmiFlags=s:cvode"); getErrorString();
 loadFile("TwinBlocks/package.mo"); getErrorString();

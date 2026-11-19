@@ -6,7 +6,7 @@ package Storage "Water stores"
     replaceable package Medium = Buildings.Media.Water "The fluid";
     parameter Modelica.Units.SI.Volume V "Volume";
     parameter Modelica.Units.SI.MassFlowRate m_flow_nominal "Nominal flow through it";
-    parameter Modelica.Units.SI.ThermalConductance UA = 2 "Heat loss to the surroundings per kelvin";
+    parameter Modelica.Units.SI.ThermalConductance UA = 2 "Heat loss to the surroundings per kelvin (a small insulated tank, assumed)";
     parameter Modelica.Units.NonSI.Temperature_degC T_start = 20 "Water temperature at the start";
     parameter Modelica.Units.NonSI.Temperature_degC T_ambient = 20 "Surroundings' temperature";
     Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) "In";
