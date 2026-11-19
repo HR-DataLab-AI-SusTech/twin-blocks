@@ -31,7 +31,8 @@ annotation. The build fetches them and runs with no network, so a library missin
 
 1. **What the platform feeds is a top-level `input`, what it reads a top-level `output`**, each of
    a type in `TwinBlocks.Units` (`Temperature_degC`, `Power_kW`, `Energy_kWh`, `MassFlowRate`,
-   `Fraction`, `Ratio`), whose unit is the one the kind declares for the channel.
+   `VolumeFlowRate_Lmin`, `Fraction`, `Ratio`, `Pressure_bar`, `TemperatureDifference_K`,
+   `Speed_rpm`), whose unit is the one the kind declares for the channel.
 2. **A run's parameter is a top-level `parameter`** with a unit and a description; a value fixed
    for the model goes under `protected`.
 3. **A state's start the platform may set is a parameter named `...Start`**, in its unit, so
