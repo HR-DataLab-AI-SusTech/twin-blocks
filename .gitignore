@@ -1,0 +1,12 @@
+*.fmu
+build/
+.venv/
+__pycache__/
+kind-entry.json
+# What OpenModelica's build leaves beside build.mos, whatever the model is called
+*.log
+*_FMU.*
+*_info.json
+*_external_functions.json
+index.html
+*.fmutmp/

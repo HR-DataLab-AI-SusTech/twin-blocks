@@ -1,0 +1,24 @@
+[project]
+name = "twin-blocks"
+version = "0.1.0"
+description = "A Modelica model for the twin platform: built into an FMU, tested and registered"
+requires-python = ">=3.11"
+dependencies = ["twinhub[fmu]>=4.0,<5"]
+
+# The SDK comes from the platform's own package index, everything else from PyPI.
+[[tool.uv.index]]
+name = "twinhub"
+url = "https://dtp.twinhub.nl/sdk/simple"
+explicit = true
+
+[tool.uv.sources]
+twinhub = { index = "twinhub" }
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "S"]

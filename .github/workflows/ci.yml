@@ -1,0 +1,39 @@
+# Every push builds the library's example into an FMU in OpenModelica's pinned image, holds it to
+# reference/ and keeps it as an artifact: the library compiles, and its blocks give what they gave.
+name: library
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+# bash with pipefail, so `entry | tee` fails when `entry` does.
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - run: uv sync --frozen
+      - name: Build the FMU
+        run: uv run --frozen python scripts/model.py build
+      - name: Hold it to the reference
+        run: uv run --frozen python scripts/model.py test
+      - name: The kind's models entry
+        run: uv run --frozen python scripts/model.py entry | tee kind-entry.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fmu
+          path: |
+            *.fmu
+            kind-entry.json
+            build/built-from
+          if-no-files-found: error

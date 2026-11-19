@@ -1,0 +1,32 @@
+# What this repository builds, tests and registers. `scripts/model.py` reads it; change it with
+# the model.
+
+# The FMU build.mos writes (its fileNamePrefix), and the model's id in the kind's `models`.
+fmu = "HeatPumpOnMeasuredWater.fmu"
+model_id = "heat-pump-on-measured-water"
+
+# OpenModelica's image, pinned by digest: CI builds the FMU in it, and a registered version
+# names its release.
+openmodelica_image = "openmodelica/openmodelica:v1.27.1-minimal@sha256:ac9a0223e69b8055d444b42f58ccb9680342b56848c68b81385bf83d7c0ba824"
+
+# The Modelica libraries the model uses, each a git repository at a full commit. `build` fetches
+# them into build/libraries/ and builds with no network, so the commit says exactly what built the
+# FMU. The Modelica Standard Library is v4.1.0, the version `uses` in Model/package.mo names, in
+# OpenModelica's own distribution (4.1.0+maint.om): its ModelicaServices finds a modelica:// file
+# inside an FMU, where the upstream one does not. Add another library the same way, its
+# repository's root holding the library's folder (OpenModelica's index names the commit).
+[libraries.ModelicaStandardLibrary]
+git = "https://github.com/OpenModelica/OpenModelica-ModelicaStandardLibrary.git"
+commit = "8df0769a9cee6ad04ddfff95faee64cd70f662ec"
+
+# LBNL's Modelica Buildings Library 14.0.0, the commit OpenModelica's library index names.
+[libraries.Buildings]
+git = "https://github.com/lbl-srg/modelica-buildings.git"
+commit = "ad48324b74e9751e2e49dac5fe3c4dcb546755a2"
+
+# The example is built and stepped in CI; it replays nothing and is scored against nothing.
+
+# The reference test: reference/inputs.csv fed to the example, one step per row, must give
+# reference/outputs.csv within this absolute tolerance, in each output's unit.
+[reference]
+tolerance = 0.001
